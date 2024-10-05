@@ -8,7 +8,6 @@ export default defineConfig({
   define: {
     'process.env': {},
     'window.global': {},
-
   },
   build: {
     rollupOptions: {

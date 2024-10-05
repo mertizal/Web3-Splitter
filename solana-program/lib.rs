@@ -3,7 +3,7 @@ use anchor_spl::associated_token::AssociatedToken;
 use anchor_spl::token::{transfer, Mint, Token, TokenAccount, Transfer};
 
 // Declare the program's ID to use in the program. You should generate a new one
-declare_id!("8chgJKTABWvSbKZ9ENCbKkqbC6DrjwF8VqycQ5XNQwbr");
+declare_id!("HmBSZhjCRMoUEWTtrfUVBMov3AWEdAe8XYZdywgNCTiq");
 
 #[program]
 mod spliter {

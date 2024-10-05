@@ -4,11 +4,12 @@ import * as anchor from "@coral-xyz/anchor";
 import { reactive, ref, onMounted } from "vue";
 import { SystemProgram } from "@solana/web3.js";
 
-const { program, wallet, handlePDA } = useWorkspace();
+const { program, wallet, handlePDA,findAssociatedTokenAddress,TOKEN_PROGRAM_ID,SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID } = useWorkspace();
 
 onMounted(async () => {
     initWorkspace();
 });
+
 const form = reactive({
     address: "EgJVwJN5enK7h74cdAKFogEYNCH1va9eWPzLZSZRNutH",
     percent: 100,
@@ -22,6 +23,7 @@ const splitter = reactive({
 
 const addresses = reactive([]);
 const sumAllPercent = ref(100);
+const token = ref(null);
 
 async function createSplitter() {
     let { connection, wallet } = useWorkspace();
@@ -53,19 +55,28 @@ function remove(index) {
 }
 
 async function deploySplitter() {
-    const PDA = await handlePDA(splitter.name, wallet.value);
+    const tokenAddress = new anchor.web3.PublicKey(token.value);
+    const PDA = await handlePDA(splitter.name, wallet.value,tokenAddress);
     let address = [];
     let percent = [];
     for (let index = 0; index < addresses.length; index++) {
         address[index] = new anchor.web3.PublicKey(addresses[index].address);
         percent[index] = new anchor.BN(addresses[index].percent);
     }
+    const vaultTokenAccount = await findAssociatedTokenAddress(
+      PDA,
+      tokenAddress
+    );
     await program.value.methods
         .initialize(splitter.name, percent, address)
         .accounts({
             vault: PDA,
+            vaultTokenAccount:vaultTokenAccount,
+            token: tokenAddress,
             authority: wallet.value.publicKey,
             systemProgram: SystemProgram.programId,
+            tokenProgram: TOKEN_PROGRAM_ID,
+            associatedTokenProgram: SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
         })
         .rpc();
 }
@@ -88,6 +99,17 @@ async function deploySplitter() {
                 Don't forget to name of your splitter. Code is not record your PDA,
                 and your PDA require splitter name
             </p>
+        </div>
+        <div class="form-control">
+            <label class="label">
+                <span class="label-text">Token address</span>
+            </label>
+            <input
+                type="text"
+                v-model="token"
+                placeholder="Token address"
+                class="input input-bordered"
+            />
         </div>
         <div class="form-control w-full">
             <label class="label">

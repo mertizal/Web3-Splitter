@@ -6,12 +6,14 @@ import { encodeURL, createQR } from "@solana/pay";
 import { reactive, ref, onMounted } from "vue";
 import { SystemProgram } from "@solana/web3.js";
 
+import { getMint } from "@solana/spl-token";
+
 const splitter = ref(null);
 const PDA = ref();
 const depositeAmount = ref(0);
 const qr = ref(null);
 
-const { program, wallet,formatThePubkey } = useWorkspace();
+const { program, connection,wallet,formatThePubkey,findAssociatedTokenAddress,TOKEN_PROGRAM_ID,SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID } = useWorkspace();
 
 onMounted(async () => {
     initWorkspace();
@@ -28,22 +30,58 @@ async function deleteSplitter() {
 }
 
 async function deposite() {
+    const vaultPDA = new anchor.web3.PublicKey(PDA.value)
+    const token = new anchor.web3.PublicKey(splitter.value.tokenId);
+    
+    const vaultTokenAccount = await findAssociatedTokenAddress(
+        vaultPDA,
+        token,
+    );
+    const mint = await getMint(connection, token);
+    const singerTokenAccount = await findAssociatedTokenAddress(
+      wallet.value.publicKey,
+      token,
+    );
+    console.log(vaultTokenAccount.toString(),singerTokenAccount.toString());
+
     await program.value.methods
-        .deposite(new anchor.BN(depositeAmount.value * 1000000000))
+        .deposite(new anchor.BN(depositeAmount.value))
         .accounts({
-            vault: new anchor.web3.PublicKey(PDA.value),
+            vault: vaultPDA,
+            vaultTokenAccount:vaultTokenAccount,
+            token: token,
+            singerTokenAccount: singerTokenAccount,
             authority: wallet.value.publicKey,
             systemProgram: SystemProgram.programId,
+            tokenProgram: TOKEN_PROGRAM_ID,
+            associatedTokenProgram: SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
         })
         .rpc();
 }
 async function claim() {
+    const vaultPDA = new anchor.web3.PublicKey(PDA.value)
+
+    const token = new anchor.web3.PublicKey(splitter.value.tokenId);
+    const vaultTokenAccount = await findAssociatedTokenAddress(
+        vaultPDA,
+      token,
+    );
+    const mint = await getMint(connection, token);
+    const singerTokenAccount = await findAssociatedTokenAddress(
+      wallet.value.publicKey,
+      token,
+    );
     await program.value.methods
         .claim()
         .accounts({
-            vault: new anchor.web3.PublicKey(PDA.value),
-            authority: wallet.value.publicKey,
+            vault: vaultPDA,
+            vaultTokenAccount:vaultTokenAccount,
+            token: token,
+            singerTokenAccount: singerTokenAccount,
+            claimer: wallet.value.publicKey,
+            tokenProgram: TOKEN_PROGRAM_ID,
             systemProgram: SystemProgram.programId,
+            associatedTokenProgram: SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
         })
         .rpc();
 }
@@ -90,30 +128,12 @@ async function getSplitter() {
                     class="input input-bordered w-3/4"
                 />
                 <a class="btn btn-square w-1/4" @click="getSplitter">
-                    Get it
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-cloud-search"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="#ffffff"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path
-                            d="M11 18.004h-4.343c-2.572 -.004 -4.657 -2.011 -4.657 -4.487c0 -2.475 2.085 -4.482 4.657 -4.482c.393 -1.762 1.794 -3.2 3.675 -3.773c1.88 -.572 3.956 -.193 5.444 1c1.488 1.19 2.162 3.007 1.77 4.769h.99"
-                        />
-                        <path d="M18 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" />
-                        <path d="M20.2 20.2l1.8 1.8" /></svg
-                ></a>
+                    Get it</a>
             </div>
         </div>
         <div v-if="splitter != null">
             <div>{{ splitter.name }}</div>
+            <div>{{ splitter.tokenId.toString() }}</div>
             <div class="overflow-x-auto">
 
             <table class="table">
