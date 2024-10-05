@@ -453,7 +453,7 @@
     font-family: Sriracha;
     --interval: 1s;
     background: linear-gradient(to right, #7b4397, #dc2430);
-    display: inline-block;
+    display: flex;
     text-shadow:
         0 0 10px var(--color1),
         0 0 20px var(--color2),
