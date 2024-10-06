@@ -1,6 +1,6 @@
 <script setup>
 import { useWorkspace, initWorkspace } from "../lib/useWorkspace";
-import * as anchor from "@coral-xyz/anchor";
+import * as anchor from "@project-serum/anchor";
 import { reactive, ref, onMounted } from "vue";
 import { SystemProgram } from "@solana/web3.js";
 

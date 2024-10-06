@@ -5,10 +5,7 @@ import { initWorkspace } from "./lib/useWorkspace";
 
 initWorkspace();
 </script>
-<link href='https://fonts.googleapis.com/css?family=League+Script' rel='stylesheet' type='text/css'>
-<style scoped>
-@import url('https://fonts.googleapis.com/css?family=Bad+Script|Gruppo|Kumar+One+Outline|League+Script|Londrina+Outline|Monoton|Sriracha|Yellowtail&amp;text=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789?+');
-</style>
+
 <template>
     <div class="bg-main-gradient">
         <div class="py-4 bg-navbar-gradient sticky top-0 z-50 shadow-lg">
@@ -60,3 +57,7 @@ initWorkspace();
         <div class="bg-main-glass"></div>
     </div>
 </template>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css?family=Bad+Script|Gruppo|Kumar+One+Outline|League+Script|Londrina+Outline|Monoton|Sriracha|Yellowtail&amp;text=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789?+');
+</style>

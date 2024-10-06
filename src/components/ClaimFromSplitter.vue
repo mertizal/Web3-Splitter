@@ -1,23 +1,19 @@
 <script setup module="ts">
 import { useWorkspace, initWorkspace } from "../lib/useWorkspace";
-import * as anchor from "@coral-xyz/anchor";
-import { encodeURL, createQR } from "@solana/pay";
-
+import * as anchor from "@project-serum/anchor";
 import { reactive, ref, onMounted } from "vue";
 import { SystemProgram } from "@solana/web3.js";
 
 import { getMint } from "@solana/spl-token";
 
 const splitter = ref(null);
-const PDA = ref();
+const PDA = ref('3VnaEvUBLNyGPDA6CAvKsXytZJf2D3WnjTn3db4u8a2t');
 const depositeAmount = ref(0);
 const qr = ref(null);
 
-const { program, connection,wallet,formatThePubkey,findAssociatedTokenAddress,TOKEN_PROGRAM_ID,SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID } = useWorkspace();
+const { program, connection, wallet, formatThePubkey, findAssociatedTokenAddress, SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID } = useWorkspace();
 
-onMounted(async () => {
-    initWorkspace();
-});
+
 async function deleteSplitter() {
     await program.value.methods
         .delete()
@@ -31,25 +27,24 @@ async function deleteSplitter() {
 
 async function deposite() {
     const vaultPDA = new anchor.web3.PublicKey(PDA.value)
-    const token = new anchor.web3.PublicKey(splitter.value.tokenId);
-    
+    const tokenAccount = new anchor.web3.PublicKey(splitter.value.tokenId);
+
     const vaultTokenAccount = await findAssociatedTokenAddress(
         vaultPDA,
-        token,
+        tokenAccount,
     );
-    const mint = await getMint(connection, token);
+    const mint = await getMint(connection, tokenAccount);
     const singerTokenAccount = await findAssociatedTokenAddress(
-      wallet.value.publicKey,
-      token,
+        wallet.value.publicKey,
+        tokenAccount,
     );
-    console.log(vaultTokenAccount.toString(),singerTokenAccount.toString());
-
-    await program.value.methods
+    const TOKEN_PROGRAM_ID = new anchor.web3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
+    const tx = await program.value.methods
         .deposite(new anchor.BN(depositeAmount.value))
-        .accounts({
+        .accountsStrict({
             vault: vaultPDA,
-            vaultTokenAccount:vaultTokenAccount,
-            token: token,
+            vaultTokenAccount: vaultTokenAccount,
+            token: tokenAccount,
             singerTokenAccount: singerTokenAccount,
             authority: wallet.value.publicKey,
             systemProgram: SystemProgram.programId,
@@ -57,6 +52,8 @@ async function deposite() {
             associatedTokenProgram: SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID,
         })
         .rpc();
+
+
 }
 async function claim() {
     const vaultPDA = new anchor.web3.PublicKey(PDA.value)
@@ -64,18 +61,20 @@ async function claim() {
     const token = new anchor.web3.PublicKey(splitter.value.tokenId);
     const vaultTokenAccount = await findAssociatedTokenAddress(
         vaultPDA,
-      token,
+        token,
     );
     const mint = await getMint(connection, token);
     const singerTokenAccount = await findAssociatedTokenAddress(
-      wallet.value.publicKey,
-      token,
+        wallet.value.publicKey,
+        token,
     );
+    const TOKEN_PROGRAM_ID = new anchor.web3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
+
     await program.value.methods
         .claim()
         .accounts({
             vault: vaultPDA,
-            vaultTokenAccount:vaultTokenAccount,
+            vaultTokenAccount: vaultTokenAccount,
             token: token,
             singerTokenAccount: singerTokenAccount,
             claimer: wallet.value.publicKey,
@@ -121,12 +120,7 @@ async function getSplitter() {
         <h2 class="card-title">Splitter Actions</h2>
         <div class="form-control">
             <div class="input-group">
-                <input
-                    type="text"
-                    v-model="PDA"
-                    placeholder="Your Splitter PDA"
-                    class="input input-bordered w-3/4"
-                />
+                <input type="text" v-model="PDA" placeholder="Your Splitter PDA" class="input input-bordered w-3/4" />
                 <a class="btn btn-square w-1/4" @click="getSplitter">
                     Get it</a>
             </div>
@@ -136,50 +130,40 @@ async function getSplitter() {
             <div>{{ splitter.tokenId.toString() }}</div>
             <div class="overflow-x-auto">
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Wallet</th>
-                        <th>balance</th>
-                        <th>Share</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(item, index) in splitter.accounts">
-                        <td>{{ formatThePubkey(item) }}</td>
-                        <td>{{ splitter.accountsVault[index] / 1000000000}} </td>
-                        <td>{{ splitter.percentages[index] }} %</td>
-                        <td>
-                            <a
-                                v-if="wallet.publicKey == item.toString()"
-                                class="btn btn-info btn-xs"
-                                @click="claim"
-                                >Claim
-                               
-                           </a>
-                            <span v-else>-</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Wallet</th>
+                            <th>balance</th>
+                            <th>Share</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item, index) in splitter.accounts">
+                            <td>{{ formatThePubkey(item) }}</td>
+                            <td>{{ splitter.accountsVault[index] / 1000000000 }} </td>
+                            <td>{{ splitter.percentages[index] }} %</td>
+                            <td>
+                                <a v-if="wallet.publicKey == item.toString()" class="btn btn-info btn-xs"
+                                    @click="claim">Claim
+
+                                </a>
+                                <span v-else>-</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <p>
                 You can close splitter and get all found inside that all accounts.
-                <a
-                    @click="deleteSplitter"
-                    class="text-red-400 cursor-pointer"
-                    v-if="splitter.authority.toString() == wallet.publicKey"
-                    >Delete</a
-                >
+                <a @click="deleteSplitter" class="text-red-400 cursor-pointer"
+                    v-if="splitter.authority.toString() == wallet.publicKey">Delete</a>
                 splitter
             </p>
         </div>
         <dialog id="my_modal_2" class="modal">
-            <form
-                method="dialog"
-                class="modal-box w-6/12 max-w-5xl flex flex-col"
-            >
+            <form method="dialog" class="modal-box w-6/12 max-w-5xl flex flex-col">
                 <h3 class="font-bold text-lg text-center">
                     Deposite {{ depositeAmount }} SOL
                 </h3>
@@ -195,56 +179,26 @@ async function getSplitter() {
         </dialog>
         <div class="form-control">
             <div class="input-group">
-                <input
-                    type="text"
-                    v-model="depositeAmount"
-                    placeholder="Deposite Amount (SOL)"
-                    class="input input-bordered w-2/4"
-                />
-                <a class="btn btn-square w-1/4" @click="deposite"
-                    >Deposite
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-currency-solana"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="#ffffff"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
+                <input type="text" v-model="depositeAmount" placeholder="Deposite Amount (SOL)"
+                    class="input input-bordered w-2/4" />
+                <a class="btn btn-square w-1/4" @click="deposite">Deposite
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-currency-solana"
+                        width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                         <path d="M4 18h12l4 -4h-12z" />
                         <path d="M8 14l-4 -4h12l4 4" />
-                        <path d="M16 10l4 -4h-12l-4 4" /></svg
-                ></a>
-                <a class="btn btn-square w-1/4" @click="createQRCode"
-                    ><svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon icon-tabler icon-tabler-qrcode"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="#ffffff"
-                        fill="none"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
+                        <path d="M16 10l4 -4h-12l-4 4" />
+                    </svg></a>
+                <a class="btn btn-square w-1/4" @click="createQRCode"><svg xmlns="http://www.w3.org/2000/svg"
+                        class="icon icon-tabler icon-tabler-qrcode" width="24" height="24" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <path
-                            d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
-                        />
+                        <path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
                         <path d="M7 17l0 .01" />
-                        <path
-                            d="M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
-                        />
+                        <path d="M14 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
                         <path d="M7 7l0 .01" />
-                        <path
-                            d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z"
-                        />
+                        <path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
                         <path d="M17 7l0 .01" />
                         <path d="M14 14l3 0" />
                         <path d="M20 14l0 .01" />
@@ -253,8 +207,7 @@ async function getSplitter() {
                         <path d="M17 17l3 0" />
                         <path d="M20 17l0 3" />
                     </svg>
-                    QR</a
-                >
+                    QR</a>
             </div>
         </div>
     </div>

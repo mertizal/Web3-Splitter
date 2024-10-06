@@ -32,16 +32,12 @@ import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 
 import {
   PhantomWalletAdapter,
-  BackpackWalletAdapter,
   SolflareWalletAdapter,
-  SlopeWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 
 const walletOptions = {
   wallets: [
     new PhantomWalletAdapter(),
-    new BackpackWalletAdapter(),
-    new SlopeWalletAdapter(),
     new SolflareWalletAdapter({ network: WalletAdapterNetwork.Devnet }),
   ],
   autoConnect: true,
