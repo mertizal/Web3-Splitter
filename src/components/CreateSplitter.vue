@@ -121,16 +121,16 @@ async function deploySplitter() {
                     type="text"
                     v-model="form.address"
                     placeholder="Address"
-                    class="input input-bordered w-1/3"
+                    class="input input-bordered w-full"
                 />
                 <input
                     type="number"
                     :max="sumAllPercent"
                     v-model="form.percent"
                     placeholder="%"
-                    class="input input-bordered w-1/3"
+                    class="input input-bordered w-1/5"
                 />
-                <button class="btn btn-square w-1/4" @click="addAdress">
+                <button class="btn btn-square w-1/6" @click="addAdress">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="icon icon-tabler icon-tabler-circle-plus"

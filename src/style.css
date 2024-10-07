@@ -267,9 +267,15 @@
     z-index: 1;
 }
 
+.btn-square {
+    background: linear-gradient(to right, #7b4397, #457bce);
+    filter: saturate(60%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 input[type="text"].input,
 input[type="number"].input,
-.btn-square,
 .card-actions button {
     --neon-shadow: #EC738E;
     --interval: 15s;
@@ -295,12 +301,7 @@ input[type="number"].input,
 
 .card-actions button {
     color: lightyellow;
-    --color1: yellow;
-    --color2: gold;
-    --color3: orange;
-    --color4: darkred;
     font-family: Sriracha;
-    --interval: 1s;
     background: linear-gradient(to right, #7b4397, #dc2430);
     display: inline-block;
     text-shadow:
