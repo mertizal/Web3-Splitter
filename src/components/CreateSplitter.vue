@@ -117,7 +117,6 @@ async function deploySplitter() {
             </label>
 
             <div class="input-group w-full">
-                <span>New</span>
                 <input
                     type="text"
                     v-model="form.address"

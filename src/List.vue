@@ -3,7 +3,7 @@ import ListAllSplitter from "./components/ListAllSplitter.vue";
 </script>
 <template>
 <div class="flex flex-col md:flex-row items-center justify-between page-h-full">
-    <div class="w-full md:w-3/3 text-center md:text-left mb-8 md:mb-0">
+    <div class="w-full md:w-3/3 text-center md:text-left mb-8 md:mb-0 min-h-[400px]">
       <ListAllSplitter />
     </div>
 

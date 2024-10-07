@@ -78,203 +78,6 @@
     position: relative;
     line-height: 1;
     color: #ff008b;
-
-    
-}
-
-.logo-text:before,
-.logo-text:after {
-    content: attr(data-text);
-    position: absolute;
-    color: #ff008b;
-    overflow: hidden;
-}
-
-.logo-text:before {
-    left: -2px;
-    text-shadow: 1px 0 #00efe4;
-    top: 0;
-    animation: logo-text-before 15s infinite linear alternate-reverse;
-}
-
-.logo-text:after {
-    left: 2px;
-    right: -2px;
-    text-shadow: -1px 0 #84329b;
-    top: 0;
-    animation: logo-text-after 2s infinite linear alternate-reverse;
-}
-
-@keyframes logo-text-before {
-    0% {
-        clip-path: inset(58% 0 34% 0);
-    }
-
-    5% {
-        clip-path: inset(93% 0 7% 0);
-    }
-
-    10% {
-        clip-path: inset(32% 0 47% 0);
-    }
-
-    15% {
-        clip-path: inset(30% 0 20% 0);
-    }
-
-    20% {
-        clip-path: inset(10% 0 27% 0);
-    }
-
-    25% {
-        clip-path: inset(54% 0 21% 0);
-    }
-
-    30% {
-        clip-path: inset(42% 0 24% 0);
-    }
-
-    35% {
-        clip-path: inset(42% 0 25% 0);
-    }
-
-    40% {
-        clip-path: inset(74% 0 1% 0);
-    }
-
-    45% {
-        clip-path: inset(86% 0 12% 0);
-    }
-
-    50% {
-        clip-path: inset(11% 0 20% 0);
-    }
-
-    55% {
-        clip-path: inset(32% 0 47% 0);
-    }
-
-    60% {
-        clip-path: inset(88% 0 11% 0);
-    }
-
-    65% {
-        clip-path: inset(28% 0 7% 0);
-    }
-
-    70% {
-        clip-path: inset(46% 0 20% 0);
-    }
-
-    75% {
-        clip-path: inset(91% 0 4% 0);
-    }
-
-    80% {
-        clip-path: inset(89% 0 9% 0);
-    }
-
-    85% {
-        clip-path: inset(46% 0 54% 0);
-    }
-
-    90% {
-        clip-path: inset(76% 0 20% 0);
-    }
-
-    95% {
-        clip-path: inset(33% 0 39% 0);
-    }
-
-    100% {
-        clip-path: inset(9% 0 39% 0);
-    }
-}
-
-@keyframes logo-text-after {
-    0% {
-        clip-path: inset(12% 0 10% 0);
-    }
-
-    5% {
-        clip-path: inset(14% 0 65% 0);
-    }
-
-    10% {
-        clip-path: inset(85% 0 4% 0);
-    }
-
-    15% {
-        clip-path: inset(93% 0 7% 0);
-    }
-
-    20% {
-        clip-path: inset(18% 0 58% 0);
-    }
-
-    25% {
-        clip-path: inset(10% 0 74% 0);
-    }
-
-    30% {
-        clip-path: inset(59% 0 11% 0);
-    }
-
-    35% {
-        clip-path: inset(71% 0 13% 0);
-    }
-
-    40% {
-        clip-path: inset(73% 0 8% 0);
-    }
-
-    45% {
-        clip-path: inset(55% 0 45% 0);
-    }
-
-    50% {
-        clip-path: inset(42% 0 6% 0);
-    }
-
-    55% {
-        clip-path: inset(73% 0 17% 0);
-    }
-
-    60% {
-        clip-path: inset(76% 0 22% 0);
-    }
-
-    65% {
-        clip-path: inset(61% 0 11% 0);
-    }
-
-    70% {
-        clip-path: inset(6% 0 1% 0);
-    }
-
-    75% {
-        clip-path: inset(85% 0 6% 0);
-    }
-
-    80% {
-        clip-path: inset(16% 0 14% 0);
-    }
-
-    85% {
-        clip-path: inset(8% 0 75% 0);
-    }
-
-    90% {
-        clip-path: inset(17% 0 81% 0);
-    }
-
-    95% {
-        clip-path: inset(23% 0 20% 0);
-    }
-
-    100% {
-        clip-path: inset(37% 0 20% 0);
-    }
 }
 
 .bg-main-gradient {
@@ -326,17 +129,10 @@
         0 0 80px var(--color4);
     will-change: filter, color;
     filter: saturate(60%);
-    animation: flicker steps(100) var(--interval) 1s infinite;
     position: relative;
     z-index: 1;
 }
 
-
-@keyframes flicker {
-    50% {
-      filter: saturate(200%) hue-rotate(20deg);
-    }
-  }
 .text-neon.type-1 {
     color: yellow;
     --color1: goldenrod;
@@ -418,17 +214,21 @@
     --color4: darkred;
     font-family: Sriracha;
 }
+
 .card-body {
     z-index: 1;
     position: relative;
     color: #ffffff;
 }
+
 .card-body .label-text {
     color: #ffffff;
 }
+
 .card-body .card-body-list {
     position: relative;
 }
+
 .card-body .card-body-list::before {
     content: '';
     background-image: url('/src/assets/bg-2.png');
@@ -439,6 +239,7 @@
     width: 100%;
     height: 100%;
 }
+
 .card-body .card-body-list .card-title {
     z-index: 1;
     position: relative;
@@ -462,7 +263,6 @@
         0 0 80px var(--color4);
     will-change: filter, color;
     filter: saturate(60%);
-    animation: flicker steps(100) var(--interval) 1s infinite;
     position: relative;
     z-index: 1;
 }
@@ -477,7 +277,12 @@ input[type="number"].input,
     background-color: rgba(0, 0, 0, .5);
     box-shadow: 0 0 10px 5px var(--neon-shadow), inset 0 0 1px 2px var(--neon-shadow);
     border: none;
-    animation: flicker steps(100) var(--interval) 1s infinite;
+}
+.table :where(th,td) {
+    color: #D5C8B3;
+}
+.input-group {
+    display: flex;
 }
 .input-group span {
     --neon-shadow: #EC738E;
@@ -486,8 +291,8 @@ input[type="number"].input,
     background-color: rgba(0, 0, 0, .5);
     box-shadow: 0 0 10px 5px var(--neon-shadow), inset 0 0 1px 2px var(--neon-shadow);
     border: none;
-    animation: flicker steps(100) var(--interval) 1s infinite;
 }
+
 .card-actions button {
     color: lightyellow;
     --color1: yellow;
@@ -505,8 +310,8 @@ input[type="number"].input,
         0 0 80px var(--color4);
     will-change: filter, color;
     filter: saturate(60%);
-    animation: flicker steps(100) var(--interval) 1s infinite;
 }
+
 .card-actions button:hover {
     background: #993c51;
     animation: step-end;
