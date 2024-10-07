@@ -277,8 +277,14 @@
     justify-content: center;
     box-shadow: 0 0 10px 5px var(--neon-shadow), inset 0 0 1px 2px var(--neon-shadow);
 }
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
 input[type="number"].input {
-    -webkit-appearance: none;
     text-align: center;
 }
 input[type="text"].input,
