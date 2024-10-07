@@ -160,4 +160,4 @@ The program is under active development, and future features include:
 3. **Dynamic Account Management**: The ability to add or remove accounts from a vault after its creation.
 
 
-for contact izal.mert@gmail.com
+for contact izal.mert@gmail.com - https://x.com/SplitterWeb3
