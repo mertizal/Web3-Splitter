@@ -1,0 +1,342 @@
+{
+  "version": "0.1.0",
+  "name": "splitterprogram",
+  "instructions": [
+    {
+      "name": "initialize",
+      "docs": [
+        "Create a vault"
+      ],
+      "accounts": [
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "vaultTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "percentages",
+          "type": {
+            "vec": "u64"
+          }
+        },
+        {
+          "name": "acct",
+          "type": {
+            "vec": "publicKey"
+          }
+        }
+      ]
+    },
+    {
+      "name": "update",
+      "docs": [
+        "Update the vault's percentage values"
+      ],
+      "accounts": [
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "The authority signing the transaction."
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "The system program account."
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "percentages",
+          "type": {
+            "vec": "u64"
+          }
+        }
+      ]
+    },
+    {
+      "name": "delete",
+      "docs": [
+        "Delete the vault and return the remaining money to the authority"
+      ],
+      "accounts": [
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "The authority signing the transaction."
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "The system program account."
+          ]
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "deposite",
+      "accounts": [
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "PDA account to deposit to."
+          ]
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "The authority signing the transaction."
+          ]
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "The system program account."
+          ]
+        },
+        {
+          "name": "token",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "vaultTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "singerTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "lamports",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "claim",
+      "accounts": [
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false,
+          "docs": [
+            "PDA account to claim to."
+          ]
+        },
+        {
+          "name": "claimer",
+          "isMut": true,
+          "isSigner": true,
+          "docs": [
+            "The authority signing the transaction. these time its different from the authority of the vault."
+          ]
+        },
+        {
+          "name": "vaultTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "singerTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "token",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false,
+          "docs": [
+            "The system program account."
+          ]
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Vault",
+      "docs": [
+        "Represents a vault account."
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "name",
+            "docs": [
+              "The name of the vault."
+            ],
+            "type": "string"
+          },
+          {
+            "name": "authority",
+            "docs": [
+              "The public key of the authority controlling the vault."
+            ],
+            "type": "publicKey"
+          },
+          {
+            "name": "total",
+            "docs": [
+              "The total balance of the vault."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "percentages",
+            "docs": [
+              "The percentages associated with each account in the vault."
+            ],
+            "type": {
+              "vec": "u64"
+            }
+          },
+          {
+            "name": "accountsVault",
+            "docs": [
+              "The balances of each account in the vault."
+            ],
+            "type": {
+              "vec": "u64"
+            }
+          },
+          {
+            "name": "accounts",
+            "docs": [
+              "The account public keys associated with the vault."
+            ],
+            "type": {
+              "vec": "publicKey"
+            }
+          },
+          {
+            "name": "tokenId",
+            "type": "publicKey"
+          },
+          {
+            "name": "vaultTokenAccount",
+            "type": "publicKey"
+          },
+          {
+            "name": "vaultBump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "SumPercentages",
+      "msg": "Sum of percentages must be 100"
+    },
+    {
+      "code": 6001,
+      "name": "Unauthorized",
+      "msg": "Unauthorized"
+    },
+    {
+      "code": 6002,
+      "name": "WrongOwner",
+      "msg": "Wrong Owner"
+    }
+  ],
+  "metadata": {
+    "address": "EbSG8YorD2N1QHoiayDba3cuDQsyUJ7ysocjHVaLb9b5"
+  }
+}

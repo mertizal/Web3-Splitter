@@ -7,7 +7,7 @@ import { SystemProgram } from "@solana/web3.js";
 import { getMint } from "@solana/spl-token";
 
 const splitter = ref(null);
-const PDA = ref('3VnaEvUBLNyGPDA6CAvKsXytZJf2D3WnjTn3db4u8a2t');
+const PDA = ref('AUy3WQXXMQU2MVMFYqnBbiwxTg5Hyuv2So63VQTWoc3y');
 const depositeAmount = ref(0);
 const qr = ref(null);
 
@@ -38,9 +38,11 @@ async function deposite() {
         wallet.value.publicKey,
         tokenAccount,
     );
+    const fullAmount = new anchor.BN(depositeAmount.value * Math.pow(10, mint.decimals));
+    console.log(fullAmount.toString());
     const TOKEN_PROGRAM_ID = new anchor.web3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
     const tx = await program.value.methods
-        .deposite(new anchor.BN(depositeAmount.value))
+        .deposite(fullAmount)
         .accountsStrict({
             vault: vaultPDA,
             vaultTokenAccount: vaultTokenAccount,

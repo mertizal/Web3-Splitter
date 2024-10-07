@@ -3,7 +3,7 @@ import { useAnchorWallet } from "solana-wallets-vue";
 import { Connection, clusterApiUrl, PublicKey } from "@solana/web3.js";
 import { AnchorProvider, Program, Wallet, web3 } from "@project-serum/anchor";
 
-import idl from "./idl.json";
+import idl from "./splitterprogram.json";
 import { Idl } from "@project-serum/anchor";
 
 const typedIdl: Idl = idl as Idl;
@@ -25,7 +25,7 @@ export const useWorkspace = () => workspace;
 
 export const initWorkspace = () => {
     const programID = new PublicKey(
-        "4BfhiGwicFSDkzmyobJx5nys3LgYHgPvBqzuuXmZqRZw"
+        "EbSG8YorD2N1QHoiayDba3cuDQsyUJ7ysocjHVaLb9b5"
     );
     const SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID = new web3.PublicKey(
         "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
