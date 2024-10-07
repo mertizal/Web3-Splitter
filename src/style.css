@@ -286,6 +286,7 @@ input[type=number] {
 }
 input[type="number"].input {
     text-align: center;
+    padding-right: 2rem;
 }
 input[type="text"].input,
 input[type="number"].input,
