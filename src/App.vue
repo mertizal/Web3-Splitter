@@ -39,10 +39,10 @@ initWorkspace();
                             </nav>
                         </div>
                         <nav class="hidden md:flex">
-                            <RouterLink to="/" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 text-neon type-5" active-class="text-gray-100 border-blue-500">Home</RouterLink>
-                            <RouterLink to="/create" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 text-neon type-5" active-class="text-gray-100 border-blue-500">Create</RouterLink>
-                            <RouterLink to="/action" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 text-neon type-5" active-class="text-gray-100 border-blue-500">Actions</RouterLink>
-                            <RouterLink to="/list" class="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 text-neon type-5" active-class="text-gray-100 border-blue-500">List</RouterLink>
+                            <RouterLink to="/" class="border-b-2 border-transparent hover:text-white dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 text-neon type-5" active-class="text-gray-100 border-blue-500">Home</RouterLink>
+                            <RouterLink to="/create" class="border-b-2 border-transparent hover:text-white dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 text-neon type-5" active-class="text-gray-100 border-blue-500">Create</RouterLink>
+                            <RouterLink to="/action" class="border-b-2 border-transparent hover:text-white dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 text-neon type-5" active-class="text-gray-100 border-blue-500">Actions</RouterLink>
+                            <RouterLink to="/list" class="border-b-2 border-transparent hover:text-white dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6 text-neon type-5" active-class="text-gray-100 border-blue-500">List</RouterLink>
                         </nav>
                         <div class="neon-wallet-btn">
                             <wallet-multi-button></wallet-multi-button>
